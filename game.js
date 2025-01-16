@@ -6,7 +6,8 @@ class Player {
         this.inventory = [];
         this.maxInventorySlots = 10;
         this.itemImages = {
-            'Rusty Sword': '/Rusty Sword.png'
+            'Rusty Sword': '/Rusty Sword.png',
+            'Magic Scroll': '/Magic Scroll.png'
         };
     }
 
