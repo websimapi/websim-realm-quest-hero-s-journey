@@ -285,8 +285,10 @@ class GameWorld {
         const sunImage = document.getElementById('sun-image');
         const lightingOverlay = document.getElementById('lighting-overlay');
         const sceneSvg = document.getElementById('scene-graphics');
+        const backgroundLandscape = document.getElementById('background-landscape');
+        const mountainRange = document.getElementById('mountain-range');
         const cycleDuration = 24 * 60 * 1000; // 24 minutes total cycle
-        const startTime = Date.now();
+        const startTime = Date.now() - (cycleDuration / 2); // Start mid-cycle
 
         const updateSunPosition = () => {
             const currentTime = Date.now();
@@ -303,21 +305,25 @@ class GameWorld {
 
             // Update lighting based on time of day
             const intensity = Math.sin(progress * Math.PI);
+            
+            // More nuanced lighting overlay
             lightingOverlay.style.background = `radial-gradient(
-                circle at 25% 25%, 
-                rgba(255, 255, 0, ${0.1 + intensity * 0.2}), 
-                transparent 50%
+                circle at ${sunX/8}% ${sunY/4}%, 
+                rgba(255, 255, 0, ${0.1 + intensity * 0.3}), 
+                transparent 70%
             )`;
 
-            // Change scene color based on time of day
+            // Dynamic sky and mountain colors
             if (progress < 0.25 || progress > 0.75) {
                 // Night time
-                sceneSvg.style.backgroundColor = 'rgba(0,0,50,0.5)';
-                sceneSvg.style.filter = 'brightness(0.5)';
+                backgroundLandscape.style.fill = 'rgba(0, 0, 50, 0.8)';
+                mountainRange.style.fill = 'rgba(50, 50, 100, 0.6)';
+                sceneSvg.style.filter = 'brightness(0.4) contrast(1.2)';
             } else {
                 // Day time
-                sceneSvg.style.backgroundColor = 'transparent';
-                sceneSvg.style.filter = 'none';
+                backgroundLandscape.style.fill = 'rgba(135, 206, 235, 1)'; // Sky blue
+                mountainRange.style.fill = 'rgba(119, 136, 153, 0.7)'; // Slate gray
+                sceneSvg.style.filter = 'brightness(1) contrast(1)';
             }
 
             // Continue the animation
