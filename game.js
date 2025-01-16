@@ -8,7 +8,8 @@ class Player {
         this.itemImages = {
             'Rusty Sword': '/Rusty Sword.png',
             'Magic Scroll': '/Magic Scroll.png',
-            'Leather Armor': '/Leather Armour.png'
+            'Leather Armor': '/Leather Armour.png',
+            'Health Potion': '/Health Potion.png'
         };
     }
 
