@@ -36,6 +36,7 @@ class GameWorld {
         this.player = new Player();
         this.currentEnemy = null;
         this.initializeEventListeners();
+        this.setupKeyboardSupport();
     }
 
     initializeEventListeners() {
@@ -102,9 +103,34 @@ class GameWorld {
         const dialogueBox = document.getElementById('dialogue-box');
         dialogueBox.textContent = message;
     }
+
+    // Add keyboard navigation support
+    setupKeyboardSupport() {
+        document.addEventListener('keydown', (event) => {
+            switch(event.key) {
+                case 'e':
+                case 'E':
+                    document.getElementById('explore-btn').click();
+                    break;
+                case 'f':
+                case 'F':
+                    document.getElementById('fight-btn').click();
+                    break;
+                case 'i':
+                case 'I':
+                    document.getElementById('inventory-btn').click();
+                    break;
+            }
+        });
+    }
 }
 
 // Initialize the game
 document.addEventListener('DOMContentLoaded', () => {
     new GameWorld();
 });
+
+// Error handling for older browsers
+if (!window.localStorage) {
+    console.warn('Local storage is not supported in this browser.');
+}

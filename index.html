@@ -1,30 +1,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Realm Quest: Hero's Journey</title>
     <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="An interactive RPG adventure game">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%233498db'><text y='.9em' font-size='90'>🗡️</text></svg>">
+    <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-    <div id="game-container">
-        <div id="game-header">
+    <main id="game-container" role="main" aria-label="Realm Quest Game">
+        <header id="game-header" role="banner">
             <h1>Realm Quest</h1>
-            <div id="player-stats">
-                <span id="player-health">❤️ 100</span>
-                <span id="player-level">🔱 Level 1</span>
-                <span id="player-gold">💰 0</span>
+            <div id="player-stats" aria-live="polite">
+                <span id="player-health" aria-label="Player Health">❤️ 100</span>
+                <span id="player-level" aria-label="Player Level">🔱 Level 1</span>
+                <span id="player-gold" aria-label="Player Gold">💰 0</span>
             </div>
-        </div>
-        <div id="game-screen">
-            <div id="character"></div>
-            <div id="world"></div>
-            <div id="dialogue-box"></div>
-        </div>
+        </header>
+        <section id="game-screen" aria-live="polite">
+            <div id="character" aria-hidden="true"></div>
+            <div id="world" aria-hidden="true"></div>
+            <div id="dialogue-box" aria-live="assertive" role="status"></div>
+        </section>
         <div id="action-buttons">
-            <button id="explore-btn">Explore</button>
-            <button id="fight-btn">Fight</button>
-            <button id="inventory-btn">Inventory</button>
+            <button id="explore-btn" aria-label="Explore the world">Explore</button>
+            <button id="fight-btn" aria-label="Engage in combat">Fight</button>
+            <button id="inventory-btn" aria-label="View inventory">Inventory</button>
         </div>
-    </div>
+    </main>
     <script type="module" src="game.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
