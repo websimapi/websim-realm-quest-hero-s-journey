@@ -7,11 +7,42 @@
     <meta name="description" content="An interactive RPG adventure game">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%233498db'><text y='.9em' font-size='90'>🗡️</text></svg>">
     <link rel="manifest" href="/manifest.json">
+    <style>
+        #game-header h1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+        #game-header .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+        #realm-logo, #quest-logo {
+            max-height: 100px;  
+            object-fit: contain;
+        }
+        #realm-logo {
+            position: absolute;
+            top: -25px;  
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
     <main id="game-container" role="main" aria-label="Realm Quest Game">
         <header id="game-header" role="banner">
-            <h1>Realm Quest</h1>
+            <h1>
+                <div class="logo-container">
+                    <img id="realm-logo" src="/Realm.png" alt="Realm" />
+                    <img id="quest-logo" src="/Quest.png" alt="Quest" />
+                </div>
+            </h1>
             <div id="player-stats" aria-live="polite">
                 <span id="player-health" aria-label="Player Health">❤️ 100</span>
                 <span id="player-level" aria-label="Player Level">🔱 Level 1</span>
@@ -48,6 +79,18 @@
             <button id="inventory-btn" aria-label="View inventory">Inventory</button>
         </div>
     </main>
+    <dialog id="inventory-modal" aria-labelledby="inventory-title">
+        <div class="inventory-container">
+            <h2 id="inventory-title">Inventory</h2>
+            <div id="inventory-scroll-container">
+                <ul id="inventory-list" aria-live="polite"></ul>
+            </div>
+            <div class="inventory-stats">
+                <p id="inventory-capacity"></p>
+            </div>
+            <button id="close-inventory-btn" aria-label="Close Inventory">Close</button>
+        </div>
+    </dialog>
     <script type="module" src="game.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
