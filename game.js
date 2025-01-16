@@ -35,29 +35,87 @@ class Player {
     updateInventoryDisplay() {
         const inventoryList = document.getElementById('inventory-list');
         const inventoryCapacity = document.getElementById('inventory-capacity');
+        const inventorySvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         
         // Clear existing inventory
         inventoryList.innerHTML = '';
+        inventorySvg.innerHTML = ''; // Clear SVG
+        
+        // Configure SVG
+        inventorySvg.setAttribute('viewBox', '0 0 500 200');
+        inventorySvg.setAttribute('width', '100%');
+        inventorySvg.setAttribute('height', '200');
         
         // Populate inventory
         this.inventory.forEach((item, index) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${item.name} (${item.type})`;
+            const itemGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            itemGroup.setAttribute('transform', `translate(${index * 100}, 0)`);
             
-            // Add a remove button
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = '🗑️';
+            // Background rect
+            const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            rect.setAttribute('x', '10');
+            rect.setAttribute('y', '10');
+            rect.setAttribute('width', '80');
+            rect.setAttribute('height', '80');
+            rect.setAttribute('fill', this.getItemColor(item.type));
+            rect.setAttribute('stroke', '#ffffff');
+            rect.setAttribute('stroke-width', '2');
+            
+            // Item type text
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute('x', '50');
+            text.setAttribute('y', '110');
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('fill', '#ffffff');
+            text.textContent = item.name;
+            
+            // Remove button
+            const removeBtn = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            removeBtn.setAttribute('cx', '85');
+            removeBtn.setAttribute('cy', '15');
+            removeBtn.setAttribute('r', '10');
+            removeBtn.setAttribute('fill', '#ff6b6b');
+            removeBtn.setAttribute('cursor', 'pointer');
+            
             removeBtn.addEventListener('click', () => {
                 this.inventory.splice(index, 1);
                 this.updateInventoryDisplay();
             });
             
-            listItem.appendChild(removeBtn);
-            inventoryList.appendChild(listItem);
+            const removeBtnText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            removeBtnText.setAttribute('x', '85');
+            removeBtnText.setAttribute('y', '20');
+            removeBtnText.setAttribute('text-anchor', 'middle');
+            removeBtnText.setAttribute('fill', 'white');
+            removeBtnText.setAttribute('font-size', '12');
+            removeBtnText.textContent = '✖';
+            
+            itemGroup.appendChild(rect);
+            itemGroup.appendChild(text);
+            itemGroup.appendChild(removeBtn);
+            itemGroup.appendChild(removeBtnText);
+            
+            inventorySvg.appendChild(itemGroup);
         });
+        
+        // Append SVG to inventory list
+        const inventoryListItem = document.createElement('li');
+        inventoryListItem.appendChild(inventorySvg);
+        inventoryList.appendChild(inventoryListItem);
 
         // Update capacity
         inventoryCapacity.textContent = `Inventory: ${this.inventory.length}/${this.maxInventorySlots}`;
+    }
+
+    // New method to get color based on item type
+    getItemColor(type) {
+        const colorMap = {
+            'Consumable': '#2ecc71',   // Green for potions
+            'Weapon': '#e74c3c',       // Red for weapons
+            'Armor': '#3498db',        // Blue for armor
+            'Magical': '#9b59b6'       // Purple for magical items
+        };
+        return colorMap[type] || '#34495e';
     }
 }
 
