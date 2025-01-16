@@ -28,8 +28,8 @@ class Player {
         const healthContainer = document.getElementById('player-health');
         healthContainer.innerHTML = this.renderHealthHearts();
         
-        document.getElementById('player-level').textContent = `🔱 Level ${this.level}`;
-        document.getElementById('player-gold').textContent = `💰 ${this.gold}`;
+        document.getElementById('player-level').textContent = ` Level ${this.level}`;
+        document.getElementById('player-gold').textContent = ` ${this.gold}`;
     }
 
     renderHealthHearts() {
@@ -93,7 +93,7 @@ class Player {
             
             // Remove button
             const removeBtn = document.createElement('button');
-            removeBtn.textContent = '✖';
+            removeBtn.textContent = '';
             removeBtn.classList.add('remove-item-btn');
             removeBtn.addEventListener('click', () => {
                 this.inventory.splice(index, 1);
@@ -151,11 +151,28 @@ class GameWorld {
         this.initializeEventListeners();
         this.setupKeyboardSupport();
         this.setupInventoryModal();
+        this.setupSceneInteractions();
+    }
+
+    setupSceneInteractions() {
+        const sceneGraphics = document.getElementById('scene-graphics');
+        const exploreRegion = document.getElementById('explore-region');
+        const enemySvg = document.getElementById('enemy-svg');
+
+        // Explore interaction
+        exploreRegion.addEventListener('click', () => {
+            this.explore();
+        });
+
+        // Fight interaction
+        enemySvg.addEventListener('click', () => {
+            if (this.currentEnemy) {
+                this.fight();
+            }
+        });
     }
 
     initializeEventListeners() {
-        document.getElementById('explore-btn').addEventListener('click', () => this.explore());
-        document.getElementById('fight-btn').addEventListener('click', () => this.fight());
         document.getElementById('inventory-btn').addEventListener('click', () => {
             this.player.updateInventoryDisplay();
             document.getElementById('inventory-modal').showModal();
@@ -248,14 +265,6 @@ class GameWorld {
     setupKeyboardSupport() {
         document.addEventListener('keydown', (event) => {
             switch(event.key) {
-                case 'e':
-                case 'E':
-                    document.getElementById('explore-btn').click();
-                    break;
-                case 'f':
-                case 'F':
-                    document.getElementById('fight-btn').click();
-                    break;
                 case 'i':
                 case 'I':
                     document.getElementById('inventory-btn').click();

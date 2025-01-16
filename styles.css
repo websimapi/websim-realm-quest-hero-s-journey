@@ -83,7 +83,7 @@ body {
 
 #action-buttons {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     padding: 15px;
     background-color: var(--primary-bg);
 }
@@ -286,4 +286,22 @@ dialog::backdrop {
     mix-blend-mode: overlay;
     opacity: 0.5;
     z-index: 2;
+}
+
+.interaction-region {
+    cursor: pointer;
+    transition: fill 0.3s ease;
+}
+
+.interaction-region:hover {
+    fill: rgba(0, 255, 0, 0.1);
+}
+
+#enemy-svg {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#enemy-svg:hover {
+    transform: scale(1.05);
 }

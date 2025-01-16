@@ -53,6 +53,7 @@
             <div id="lighting-overlay"></div>
             <svg id="scene-graphics" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
                 <rect id="ground" x="0" y="300" width="800" height="100" fill="#4CAF50" />
+                <rect id="explore-region" x="0" y="0" width="500" height="300" fill="transparent" class="interaction-region" />
                 
                 <g id="character-svg">
                     <rect x="100" y="250" width="50" height="50" fill="#FF9800" />
@@ -77,8 +78,6 @@
             <div id="dialogue-box" aria-live="assertive" role="status"></div>
         </section>
         <div id="action-buttons">
-            <button id="explore-btn" aria-label="Explore the world">Explore</button>
-            <button id="fight-btn" aria-label="Engage in combat">Fight</button>
             <button id="inventory-btn" aria-label="View inventory">Inventory</button>
         </div>
     </main>
