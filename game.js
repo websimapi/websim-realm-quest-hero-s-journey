@@ -7,7 +7,8 @@ class Player {
         this.maxInventorySlots = 10;
         this.itemImages = {
             'Rusty Sword': '/Rusty Sword.png',
-            'Magic Scroll': '/Magic Scroll.png'
+            'Magic Scroll': '/Magic Scroll.png',
+            'Leather Armor': '/Leather Armour.png'
         };
     }
 
@@ -196,7 +197,6 @@ class GameWorld {
         this.player.gold += gold;
         this.player.updateStats();
 
-        // Randomly add an item to inventory
         const possibleItems = [
             { name: "Health Potion", type: "Consumable" },
             { name: "Rusty Sword", type: "Weapon" },
@@ -223,7 +223,6 @@ class GameWorld {
         dialogueBox.textContent = message;
     }
 
-    // Add keyboard navigation support
     setupKeyboardSupport() {
         document.addEventListener('keydown', (event) => {
             switch(event.key) {
@@ -251,12 +250,10 @@ class GameWorld {
     }
 }
 
-// Initialize the game
 document.addEventListener('DOMContentLoaded', () => {
     new GameWorld();
 });
 
-// Error handling for older browsers
 if (!window.localStorage) {
     console.warn('Local storage is not supported in this browser.');
 }
