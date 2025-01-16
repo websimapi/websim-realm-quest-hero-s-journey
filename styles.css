@@ -114,6 +114,7 @@ button:focus {
     top: 0;
     left: 0;
     z-index: 1;
+    transition: background-color 1s ease, filter 1s ease;
 }
 
 #dialogue-box {
@@ -266,6 +267,8 @@ dialog::backdrop {
 }
 
 #sun-image {
+    transition: all 1s ease;
+    z-index: 3;
     animation: 
         pulse 3s ease-in-out infinite,
         sunGlow 3s ease-in-out infinite;
@@ -286,6 +289,7 @@ dialog::backdrop {
     mix-blend-mode: overlay;
     opacity: 0.5;
     z-index: 2;
+    transition: background 1s ease;
 }
 
 .interaction-region {

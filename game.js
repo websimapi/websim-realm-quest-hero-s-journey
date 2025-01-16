@@ -152,6 +152,7 @@ class GameWorld {
         this.setupKeyboardSupport();
         this.setupInventoryModal();
         this.setupSceneInteractions();
+        this.initSunCycle();
     }
 
     setupSceneInteractions() {
@@ -278,6 +279,53 @@ class GameWorld {
         closeInventoryBtn.addEventListener('click', () => {
             document.getElementById('inventory-modal').close();
         });
+    }
+
+    initSunCycle() {
+        const sunImage = document.getElementById('sun-image');
+        const lightingOverlay = document.getElementById('lighting-overlay');
+        const sceneSvg = document.getElementById('scene-graphics');
+        const cycleDuration = 24 * 60 * 1000; // 24 minutes total cycle
+        const startTime = Date.now();
+
+        const updateSunPosition = () => {
+            const currentTime = Date.now();
+            const elapsedTime = (currentTime - startTime) % cycleDuration;
+            const progress = elapsedTime / cycleDuration;
+
+            // Calculate sun position across the sky
+            const sunX = 50 + (progress * 700); // Move from x=50 to x=750
+            const sunY = 50 + Math.sin(progress * Math.PI) * 200; // Sine wave for arc
+
+            // Update sun position
+            sunImage.setAttribute('x', sunX);
+            sunImage.setAttribute('y', sunY);
+
+            // Update lighting based on time of day
+            const intensity = Math.sin(progress * Math.PI);
+            lightingOverlay.style.background = `radial-gradient(
+                circle at 25% 25%, 
+                rgba(255, 255, 0, ${0.1 + intensity * 0.2}), 
+                transparent 50%
+            )`;
+
+            // Change scene color based on time of day
+            if (progress < 0.25 || progress > 0.75) {
+                // Night time
+                sceneSvg.style.backgroundColor = 'rgba(0,0,50,0.5)';
+                sceneSvg.style.filter = 'brightness(0.5)';
+            } else {
+                // Day time
+                sceneSvg.style.backgroundColor = 'transparent';
+                sceneSvg.style.filter = 'none';
+            }
+
+            // Continue the animation
+            requestAnimationFrame(updateSunPosition);
+        };
+
+        // Start the sun cycle
+        updateSunPosition();
     }
 }
 
