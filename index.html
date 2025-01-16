@@ -7,11 +7,33 @@
     <meta name="description" content="An interactive RPG adventure game">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%233498db'><text y='.9em' font-size='90'>🗡️</text></svg>">
     <link rel="manifest" href="/manifest.json">
+    <style>
+        #game-header h1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        #game-header .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #realm-logo, #quest-logo {
+            max-height: 50px;
+            object-fit: contain;
+        }
+    </style>
 </head>
 <body>
     <main id="game-container" role="main" aria-label="Realm Quest Game">
         <header id="game-header" role="banner">
-            <h1>Realm Quest</h1>
+            <h1>
+                <div class="logo-container">
+                    <img id="realm-logo" src="/Realm.png" alt="Realm" />
+                    <img id="quest-logo" src="/Quest.png" alt="Quest" />
+                </div>
+            </h1>
             <div id="player-stats" aria-live="polite">
                 <span id="player-health" aria-label="Player Health">❤️ 100</span>
                 <span id="player-level" aria-label="Player Level">🔱 Level 1</span>
