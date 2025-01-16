@@ -1,6 +1,7 @@
 class Player {
     constructor() {
-        this.health = 100;
+        this.maxHealth = 6;  // 3 full hearts
+        this.health = 6;
         this.level = 1;
         this.gold = 0;
         this.inventory = [];
@@ -14,19 +15,39 @@ class Player {
     }
 
     takeDamage(amount) {
-        this.health -= amount;
+        this.health = Math.max(0, this.health - amount);
         this.updateStats();
     }
 
     heal(amount) {
-        this.health = Math.min(this.health + amount, 100);
+        this.health = Math.min(this.health + amount, this.maxHealth);
         this.updateStats();
     }
 
     updateStats() {
-        document.getElementById('player-health').textContent = `❤️ ${this.health}`;
+        const healthContainer = document.getElementById('player-health');
+        healthContainer.innerHTML = this.renderHealthHearts();
+        
         document.getElementById('player-level').textContent = `🔱 Level ${this.level}`;
         document.getElementById('player-gold').textContent = `💰 ${this.gold}`;
+    }
+
+    renderHealthHearts() {
+        const fullHearts = Math.floor(this.health / 2);
+        const halfHeart = this.health % 2 === 1;
+        let healthHtml = '';
+
+        // Add full hearts
+        for (let i = 0; i < fullHearts; i++) {
+            healthHtml += `<img src="/Heart Full.png" alt="Full Heart" class="heart-icon">`;
+        }
+
+        // Add half heart if needed
+        if (halfHeart) {
+            healthHtml += `<img src="/Heart Half.png" alt="Half Heart" class="heart-icon">`;
+        }
+
+        return healthHtml;
     }
 
     addToInventory(item) {
