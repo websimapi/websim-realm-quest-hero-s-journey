@@ -19,8 +19,27 @@
             </div>
         </header>
         <section id="game-screen" aria-live="polite">
-            <div id="character" aria-hidden="true"></div>
-            <div id="world" aria-hidden="true"></div>
+            <svg id="scene-graphics" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+                <rect id="ground" x="0" y="300" width="800" height="100" fill="#4CAF50" />
+                
+                <g id="character-svg">
+                    <rect x="100" y="250" width="50" height="50" fill="#FF9800" />
+                    <circle cx="125" cy="230" r="20" fill="#FFB74D" />
+                </g>
+                
+                <g id="enemy-svg" style="display: none;">
+                    <rect x="600" y="250" width="40" height="40" fill="#9C27B0" />
+                    <circle cx="620" cy="230" r="15" fill="#E040FB" />
+                </g>
+                
+                <g id="world-elements">
+                    <rect x="50" y="280" width="30" height="20" fill="#795548" /> <!-- Tree trunk -->
+                    <polygon points="35,280 65,280 50,230" fill="#4CAF50" /> <!-- Tree top -->
+                    
+                    <rect x="700" y="290" width="20" height="10" fill="#795548" /> <!-- Rock -->
+                    <rect x="200" y="290" width="15" height="10" fill="#9E9E9E" /> <!-- Another rock -->
+                </g>
+            </svg>
             <div id="dialogue-box" aria-live="assertive" role="status"></div>
         </section>
         <div id="action-buttons">

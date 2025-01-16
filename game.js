@@ -66,6 +66,11 @@ class GameWorld {
 
         if (this.currentEnemy.health <= 0) {
             this.updateDialogue(`You defeated the ${this.currentEnemy.name}!`);
+            
+            // Hide enemy SVG
+            const enemySvg = document.getElementById('enemy-svg');
+            enemySvg.style.display = 'none';
+            
             this.player.gold += 10;
             this.player.updateStats();
             this.currentEnemy = null;
@@ -83,6 +88,11 @@ class GameWorld {
             new Enemy("Wolf", 60, 8)
         ];
         this.currentEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+        
+        // Update SVG enemy display
+        const enemySvg = document.getElementById('enemy-svg');
+        enemySvg.style.display = 'block';
+        
         return `You encountered a ${this.currentEnemy.name}!`;
     }
 
