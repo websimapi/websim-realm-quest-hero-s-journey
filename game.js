@@ -5,6 +5,9 @@ class Player {
         this.gold = 0;
         this.inventory = [];
         this.maxInventorySlots = 10;
+        this.itemImages = {
+            'Rusty Sword': '/Rusty Sword.png'
+        };
     }
 
     takeDamage(amount) {
@@ -35,79 +38,69 @@ class Player {
     updateInventoryDisplay() {
         const inventoryList = document.getElementById('inventory-list');
         const inventoryCapacity = document.getElementById('inventory-capacity');
-        const inventorySvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         
         // Clear existing inventory
         inventoryList.innerHTML = '';
-        inventorySvg.innerHTML = ''; // Clear SVG
-        
-        // Configure SVG
-        inventorySvg.setAttribute('viewBox', '0 0 500 200');
-        inventorySvg.setAttribute('width', '100%');
-        inventorySvg.setAttribute('height', '200');
         
         // Populate inventory
         this.inventory.forEach((item, index) => {
-            const itemGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-            itemGroup.setAttribute('transform', `translate(${index * 100}, 0)`);
+            const itemLi = document.createElement('li');
+            itemLi.classList.add('inventory-item');
             
-            // Background rect
-            const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-            rect.setAttribute('x', '10');
-            rect.setAttribute('y', '10');
-            rect.setAttribute('width', '80');
-            rect.setAttribute('height', '80');
-            rect.setAttribute('fill', this.getItemColor(item.type));
-            rect.setAttribute('stroke', '#ffffff');
-            rect.setAttribute('stroke-width', '2');
+            // Create image for the item
+            const itemImg = document.createElement('img');
+            itemImg.src = this.itemImages[item.name] || this.getDefaultItemImage(item.type);
+            itemImg.alt = item.name;
+            itemImg.classList.add('inventory-item-image');
             
-            // Item type text
-            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            text.setAttribute('x', '50');
-            text.setAttribute('y', '110');
-            text.setAttribute('text-anchor', 'middle');
-            text.setAttribute('fill', '#ffffff');
-            text.textContent = item.name;
+            // Create item details div
+            const itemDetails = document.createElement('div');
+            itemDetails.classList.add('inventory-item-details');
+            
+            // Item name
+            const itemName = document.createElement('span');
+            itemName.textContent = item.name;
+            itemName.classList.add('inventory-item-name');
+            
+            // Item type
+            const itemType = document.createElement('span');
+            itemType.textContent = item.type;
+            itemType.classList.add('inventory-item-type');
             
             // Remove button
-            const removeBtn = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            removeBtn.setAttribute('cx', '85');
-            removeBtn.setAttribute('cy', '15');
-            removeBtn.setAttribute('r', '10');
-            removeBtn.setAttribute('fill', '#ff6b6b');
-            removeBtn.setAttribute('cursor', 'pointer');
-            
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = '✖';
+            removeBtn.classList.add('remove-item-btn');
             removeBtn.addEventListener('click', () => {
                 this.inventory.splice(index, 1);
                 this.updateInventoryDisplay();
             });
             
-            const removeBtnText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            removeBtnText.setAttribute('x', '85');
-            removeBtnText.setAttribute('y', '20');
-            removeBtnText.setAttribute('text-anchor', 'middle');
-            removeBtnText.setAttribute('fill', 'white');
-            removeBtnText.setAttribute('font-size', '12');
-            removeBtnText.textContent = '✖';
+            // Assemble the item list entry
+            itemDetails.appendChild(itemName);
+            itemDetails.appendChild(itemType);
             
-            itemGroup.appendChild(rect);
-            itemGroup.appendChild(text);
-            itemGroup.appendChild(removeBtn);
-            itemGroup.appendChild(removeBtnText);
+            itemLi.appendChild(itemImg);
+            itemLi.appendChild(itemDetails);
+            itemLi.appendChild(removeBtn);
             
-            inventorySvg.appendChild(itemGroup);
+            inventoryList.appendChild(itemLi);
         });
-        
-        // Append SVG to inventory list
-        const inventoryListItem = document.createElement('li');
-        inventoryListItem.appendChild(inventorySvg);
-        inventoryList.appendChild(inventoryListItem);
 
         // Update capacity
         inventoryCapacity.textContent = `Inventory: ${this.inventory.length}/${this.maxInventorySlots}`;
     }
 
-    // New method to get color based on item type
+    getDefaultItemImage(type) {
+        const imageMap = {
+            'Consumable': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232ecc71"><circle cx="50" cy="50" r="40"/></svg>',
+            'Weapon': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%23e74c3c"><rect x="20" y="40" width="60" height="20"/></svg>',
+            'Armor': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%233498db"><path d="M20 30 L50 10 L80 30 L80 70 L50 90 L20 70 Z"/></svg>',
+            'Magical': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%239b59b6"><polygon points="50 10 65 40 95 45 75 70 80 95 50 80 20 95 25 70 5 45 35 40"/></svg>'
+        };
+        return imageMap[type] || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%2334495e"><rect x="20" y="20" width="60" height="60"/></svg>';
+    }
+
     getItemColor(type) {
         const colorMap = {
             'Consumable': '#2ecc71',   // Green for potions
