@@ -4,6 +4,7 @@ class Player {
         this.level = 1;
         this.gold = 0;
         this.inventory = [];
+        this.maxInventorySlots = 10;
     }
 
     takeDamage(amount) {
@@ -21,6 +22,43 @@ class Player {
         document.getElementById('player-level').textContent = `🔱 Level ${this.level}`;
         document.getElementById('player-gold').textContent = `💰 ${this.gold}`;
     }
+
+    addToInventory(item) {
+        if (this.inventory.length < this.maxInventorySlots) {
+            this.inventory.push(item);
+            this.updateInventoryDisplay();
+            return true;
+        }
+        return false;
+    }
+
+    updateInventoryDisplay() {
+        const inventoryList = document.getElementById('inventory-list');
+        const inventoryCapacity = document.getElementById('inventory-capacity');
+        
+        // Clear existing inventory
+        inventoryList.innerHTML = '';
+        
+        // Populate inventory
+        this.inventory.forEach((item, index) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${item.name} (${item.type})`;
+            
+            // Add a remove button
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = '🗑️';
+            removeBtn.addEventListener('click', () => {
+                this.inventory.splice(index, 1);
+                this.updateInventoryDisplay();
+            });
+            
+            listItem.appendChild(removeBtn);
+            inventoryList.appendChild(listItem);
+        });
+
+        // Update capacity
+        inventoryCapacity.textContent = `Inventory: ${this.inventory.length}/${this.maxInventorySlots}`;
+    }
 }
 
 class Enemy {
@@ -37,12 +75,16 @@ class GameWorld {
         this.currentEnemy = null;
         this.initializeEventListeners();
         this.setupKeyboardSupport();
+        this.setupInventoryModal();
     }
 
     initializeEventListeners() {
         document.getElementById('explore-btn').addEventListener('click', () => this.explore());
         document.getElementById('fight-btn').addEventListener('click', () => this.fight());
-        document.getElementById('inventory-btn').addEventListener('click', () => this.showInventory());
+        document.getElementById('inventory-btn').addEventListener('click', () => {
+            this.player.updateInventoryDisplay();
+            document.getElementById('inventory-modal').showModal();
+        });
     }
 
     explore() {
@@ -78,7 +120,8 @@ class GameWorld {
     }
 
     showInventory() {
-        this.updateDialogue("Inventory is empty. Keep exploring!");
+        this.player.updateInventoryDisplay();
+        document.getElementById('inventory-modal').showModal();
     }
 
     encounterEnemy() {
@@ -100,6 +143,20 @@ class GameWorld {
         const gold = Math.floor(Math.random() * 20);
         this.player.gold += gold;
         this.player.updateStats();
+
+        // Randomly add an item to inventory
+        const possibleItems = [
+            { name: "Health Potion", type: "Consumable" },
+            { name: "Rusty Sword", type: "Weapon" },
+            { name: "Leather Armor", type: "Armor" },
+            { name: "Magic Scroll", type: "Magical" }
+        ];
+
+        const newItem = possibleItems[Math.floor(Math.random() * possibleItems.length)];
+        if (this.player.addToInventory(newItem)) {
+            return `You found ${gold} gold coins and a ${newItem.name}!`;
+        }
+        
         return `You found ${gold} gold coins!`;
     }
 
@@ -131,6 +188,13 @@ class GameWorld {
                     document.getElementById('inventory-btn').click();
                     break;
             }
+        });
+    }
+
+    setupInventoryModal() {
+        const closeInventoryBtn = document.getElementById('close-inventory-btn');
+        closeInventoryBtn.addEventListener('click', () => {
+            document.getElementById('inventory-modal').close();
         });
     }
 }
